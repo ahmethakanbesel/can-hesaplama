@@ -16,7 +16,7 @@ The relative evaluation system is the evaluation of a student's success accordin
 npm install
 ```
 
-### Geliştirme için
+### Geliştirme sunucusu
 
 ```
 npm run dev
