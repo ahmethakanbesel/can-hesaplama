@@ -266,29 +266,21 @@ export default function App() {
                 </Tabs.Panel>
 
                 <Tabs.Panel value="descriptions" pt="xs">
-                  <List>
-                    <List.Item>
-                      <Text fw={700}>Bağıl değerlendirmeye katma limiti (BDKL)</Text>{' '}
-                      <Text>
-                        İlgili birim kurulu tarafından belirlenen; istatistiksel değerlendirmeye
-                        dâhil edilecek başarı notlarının 100 puan üzerinden alt sınır.
-                      </Text>
-                    </List.Item>
-                    <List.Item>
-                      <Text fw={700}>Yarıyıl/yıl sonu sınavı alt limiti (YSSL)</Text>{' '}
-                      <Text>
-                        İlgili birim kurulu tarafından belirlenen; bir dersten veya uygulamadan
-                        başarılı olmak için gerekli yarıyıl/yıl sonu sınavı notu alt sınır değeri.
-                      </Text>
-                    </List.Item>
-                    <List.Item>
-                      <Text fw={700}>Başarı notu alt limiti (BNAL)</Text>{' '}
-                      <Text>
-                        İlgili birim kurulu tarafından belirlenen; bir dersten veya uygulamadan
-                        başarılı olmak için gerekli başarı notu alt sınır değeri.
-                      </Text>
-                    </List.Item>
-                  </List>
+                  <Text fw={700}>Bağıl değerlendirmeye katma limiti (BDKL)</Text>
+                  <Text>
+                    İlgili birim kurulu tarafından belirlenen; istatistiksel değerlendirmeye
+                    dâhil edilecek başarı notlarının 100 puan üzerinden alt sınırı.
+                  </Text>
+                  <Text fw={700}>Yarıyıl/yıl sonu sınavı alt limiti (YSSL)</Text>
+                  <Text>
+                    İlgili birim kurulu tarafından belirlenen; bir dersten veya uygulamadan
+                    başarılı olmak için gerekli yarıyıl/yıl sonu sınavı notu alt sınır değeri.
+                  </Text>
+                  <Text fw={700}>Başarı notu alt limiti (BNAL)</Text>
+                  <Text>
+                    İlgili birim kurulu tarafından belirlenen; bir dersten veya uygulamadan
+                    başarılı olmak için gerekli başarı notu alt sınır değeri.
+                  </Text>
                 </Tabs.Panel>
               </Tabs>
             </Paper>
