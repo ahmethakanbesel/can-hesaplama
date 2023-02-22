@@ -171,7 +171,7 @@ export default function App() {
           align="center"
           sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
         >
-          Çan Hesaplama
+          Bağıl Değerlendirme Hesaplama
         </Title>
         <SimpleGrid cols={2}>
           <Paper withBorder shadow="md" p={30} mt={30} radius="md">
