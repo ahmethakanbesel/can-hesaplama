@@ -184,6 +184,8 @@ export default function App() {
       >
         <Container size={860} my={50}>
           <Title
+            variant="gradient"
+            gradient={{ from: 'blue', to: 'cyan' }}
             align="center"
             sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
           >
