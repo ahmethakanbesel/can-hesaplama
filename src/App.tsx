@@ -18,6 +18,7 @@ import {
 import { useForm } from '@mantine/form';
 import { useLocalStorage } from '@mantine/hooks';
 import { SegmentedToggle } from './components/SegmentedToggle/SegmentedToggle';
+import { Footer } from './components/Footer/Footer';
 
 // Lookup table for T-score thresholds when number of succeed students greater than or equal to 30
 // X: Average grade
@@ -143,7 +144,7 @@ export default function App() {
         grade += statistics.average;
         grade = parseFloat(grade.toFixed(2));
         if (letterGrade == 'FF') {
-          grade = 0.00;
+          grade = 0.0;
         }
         gradeBreakpoints.unshift({ breakpoint: grade, name: letterGrade });
       }
@@ -291,6 +292,11 @@ export default function App() {
             </Paper>
           </SimpleGrid>
           <SegmentedToggle></SegmentedToggle>
+          <Footer
+            links={[
+              { label: 'Açık Kaynak', link: 'https://github.com/ahmethakanbesel/can-hesaplama' },
+            ]}
+          ></Footer>
         </Container>
       </MantineProvider>
     </ColorSchemeProvider>
