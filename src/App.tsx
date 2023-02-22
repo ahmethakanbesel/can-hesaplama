@@ -1,6 +1,8 @@
 import {
   Badge,
   Button,
+  ColorScheme,
+  ColorSchemeProvider,
   Container,
   List,
   MantineProvider,
@@ -14,6 +16,8 @@ import {
   Title,
 } from '@mantine/core';
 import { useForm } from '@mantine/form';
+import { useLocalStorage } from '@mantine/hooks';
+import { SegmentedToggle } from './components/SegmentedToggle/SegmentedToggle';
 
 // Lookup table for T-score thresholds when number of succeed students greater than or equal to 30
 // X: Average grade
@@ -155,126 +159,140 @@ export default function App() {
     }
   };
 
+  const [colorScheme, setColorScheme] = useLocalStorage<ColorScheme>({
+    key: 'mantine-color-scheme',
+    defaultValue: 'light',
+    getInitialValueInEffect: true,
+  });
+
+  const toggleColorScheme = (value?: ColorScheme) =>
+    setColorScheme(value || (colorScheme === 'dark' ? 'light' : 'dark'));
+
   return (
-    <MantineProvider
-      theme={{
-        globalStyles: (theme) => ({
-          body: {
-            justifyContent: 'center',
-          },
-        }),
-      }}
-      withGlobalStyles
-    >
-      <Container size={860} my={50}>
-        <Title
-          align="center"
-          sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
-        >
-          Bağıl Değerlendirme Not Hesaplama
-        </Title>
-        <SimpleGrid cols={2}>
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            <form onSubmit={form.onSubmit((values) => submit())}>
-              <Textarea
-                label="Notlar"
-                placeholder="90&#10;100&#10;70&#10;..."
-                autosize
-                minRows={2}
-                maxRows={4}
-                {...form.getInputProps('grades')}
-              />
-              <NumberInput
-                defaultValue={35}
-                min={0}
-                max={100}
-                placeholder="Varsayılan: 35"
-                label="Başarı notu alt limiti"
-                hideControls
-                {...form.getInputProps('passGrade')}
-              />
-              <NumberInput
-                defaultValue={35}
-                min={0}
-                max={100}
-                placeholder="Varsayılan: 35"
-                label="Yıl sonu sınavı alt limiti"
-                hideControls
-                {...form.getInputProps('passFinalGrade')}
-              />
+    <ColorSchemeProvider colorScheme={colorScheme} toggleColorScheme={toggleColorScheme}>
+      <MantineProvider
+        theme={{
+          colorScheme,
+          globalStyles: (theme) => ({
+            body: {
+              justifyContent: 'center',
+            },
+          }),
+        }}
+        withGlobalStyles
+      >
+        <Container size={860} my={50}>
+          <Title
+            align="center"
+            sx={(theme) => ({ fontFamily: `Greycliff CF, ${theme.fontFamily}`, fontWeight: 900 })}
+          >
+            Bağıl Değerlendirme Not Hesaplama
+          </Title>
+          <SimpleGrid cols={2}>
+            <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+              <form onSubmit={form.onSubmit((values) => submit())}>
+                <Textarea
+                  label="Notlar"
+                  placeholder="90&#10;100&#10;70&#10;..."
+                  autosize
+                  minRows={2}
+                  maxRows={4}
+                  {...form.getInputProps('grades')}
+                />
+                <NumberInput
+                  defaultValue={35}
+                  min={0}
+                  max={100}
+                  placeholder="Varsayılan: 35"
+                  label="Başarı notu alt limiti"
+                  hideControls
+                  {...form.getInputProps('passGrade')}
+                />
+                <NumberInput
+                  defaultValue={35}
+                  min={0}
+                  max={100}
+                  placeholder="Varsayılan: 35"
+                  label="Yıl sonu sınavı alt limiti"
+                  hideControls
+                  {...form.getInputProps('passFinalGrade')}
+                />
 
-              <NumberInput
-                defaultValue={20}
-                min={0}
-                max={100}
-                placeholder="Varsayılan: 20"
-                label="Bağıl değerlendirmeye katma limiti"
-                hideControls
-                {...form.getInputProps('resThreshold')}
-              />
+                <NumberInput
+                  defaultValue={20}
+                  min={0}
+                  max={100}
+                  placeholder="Varsayılan: 20"
+                  label="Bağıl değerlendirmeye katma limiti"
+                  hideControls
+                  {...form.getInputProps('resThreshold')}
+                />
 
-              <Button type="submit" fullWidth mt="xl">
-                Hesapla
-              </Button>
-            </form>
-          </Paper>
-          <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-            <Tabs defaultValue="letterGrades">
-              <Tabs.List>
-                <Tabs.Tab value="letterGrades">Harf Notları</Tabs.Tab>
-                <Tabs.Tab value="statistics">İstatistikler</Tabs.Tab>
-                <Tabs.Tab value="descriptions">Açıklamalar</Tabs.Tab>
-              </Tabs.List>
+                <Button type="submit" fullWidth mt="xl">
+                  Hesapla
+                </Button>
+              </form>
+            </Paper>
+            <Paper withBorder shadow="md" p={30} mt={30} radius="md">
+              <Tabs defaultValue="letterGrades">
+                <Tabs.List>
+                  <Tabs.Tab value="letterGrades">Harf Notları</Tabs.Tab>
+                  <Tabs.Tab value="statistics">İstatistikler</Tabs.Tab>
+                  <Tabs.Tab value="descriptions">Açıklamalar</Tabs.Tab>
+                </Tabs.List>
 
-              <Tabs.Panel value="letterGrades" pt="0">
-                <Table>
-                  <thead>
-                    <tr>
-                      <th>Harf Notu</th>
-                      <th>Minimum Not</th>
-                    </tr>
-                  </thead>
-                  <tbody>{rows}</tbody>
-                </Table>
-              </Tabs.Panel>
+                <Tabs.Panel value="letterGrades" pt="0">
+                  <Table>
+                    <thead>
+                      <tr>
+                        <th>Harf Notu</th>
+                        <th>Minimum Not</th>
+                      </tr>
+                    </thead>
+                    <tbody>{rows}</tbody>
+                  </Table>
+                </Tabs.Panel>
 
-              <Tabs.Panel value="statistics" pt="xs">
-                <Badge>Sınıf ortalaması</Badge> <Text>{statistics.average}</Text>
-                <Badge color="orange">Standart sapma</Badge> <Text>{statistics.stdDev}</Text>
-                <Badge color="green">Başarılı öğrenci sayısı</Badge>{' '}
-                <Text>{statistics.passed}</Text>
-                <Badge color="red">Başarısız öğrenci sayısı</Badge> <Text>{statistics.failed}</Text>
-              </Tabs.Panel>
+                <Tabs.Panel value="statistics" pt="xs">
+                  <Badge>Sınıf ortalaması</Badge> <Text>{statistics.average}</Text>
+                  <Badge color="orange">Standart sapma</Badge> <Text>{statistics.stdDev}</Text>
+                  <Badge color="green">Başarılı öğrenci sayısı</Badge>{' '}
+                  <Text>{statistics.passed}</Text>
+                  <Badge color="red">Başarısız öğrenci sayısı</Badge>{' '}
+                  <Text>{statistics.failed}</Text>
+                </Tabs.Panel>
 
-              <Tabs.Panel value="descriptions" pt="xs">
-                <List>
-                  <List.Item>
-                    <Text fw={700}>Bağıl değerlendirmeye katma limiti (BDKL)</Text>{' '}
-                    <Text>
-                      İlgili birim kurulu tarafından belirlenen; istatistiksel değerlendirmeye dâhil
-                      edilecek başarı notlarının 100 puan üzerinden alt sınır.
-                    </Text>
-                  </List.Item>
-                  <List.Item>
-                    <Text fw={700}>Yarıyıl/yıl sonu sınavı alt limiti (YSSL)</Text>{' '}
-                    <Text>
-                      İlgili birim kurulu tarafından belirlenen; bir dersten veya uygulamadan
-                      başarılı olmak için gerekli yarıyıl/yıl sonu sınavı notu alt sınır değeri.
-                    </Text>
-                  </List.Item>
-                  <List.Item>
-                    <Text fw={700}>Başarı notu alt limiti (BNAL)</Text>{' '}
-                    <Text>
-                      İlgili birim kurulu tarafından belirlenen; bir dersten veya uygulamadan
-                      başarılı olmak için gerekli başarı notu alt sınır değeri.
-                    </Text>
-                  </List.Item>
-                </List>
-              </Tabs.Panel>
-            </Tabs>
-          </Paper>
-        </SimpleGrid>
-      </Container>
-    </MantineProvider>
+                <Tabs.Panel value="descriptions" pt="xs">
+                  <List>
+                    <List.Item>
+                      <Text fw={700}>Bağıl değerlendirmeye katma limiti (BDKL)</Text>{' '}
+                      <Text>
+                        İlgili birim kurulu tarafından belirlenen; istatistiksel değerlendirmeye
+                        dâhil edilecek başarı notlarının 100 puan üzerinden alt sınır.
+                      </Text>
+                    </List.Item>
+                    <List.Item>
+                      <Text fw={700}>Yarıyıl/yıl sonu sınavı alt limiti (YSSL)</Text>{' '}
+                      <Text>
+                        İlgili birim kurulu tarafından belirlenen; bir dersten veya uygulamadan
+                        başarılı olmak için gerekli yarıyıl/yıl sonu sınavı notu alt sınır değeri.
+                      </Text>
+                    </List.Item>
+                    <List.Item>
+                      <Text fw={700}>Başarı notu alt limiti (BNAL)</Text>{' '}
+                      <Text>
+                        İlgili birim kurulu tarafından belirlenen; bir dersten veya uygulamadan
+                        başarılı olmak için gerekli başarı notu alt sınır değeri.
+                      </Text>
+                    </List.Item>
+                  </List>
+                </Tabs.Panel>
+              </Tabs>
+            </Paper>
+          </SimpleGrid>
+          <SegmentedToggle></SegmentedToggle>
+        </Container>
+      </MantineProvider>
+    </ColorSchemeProvider>
   );
 }
