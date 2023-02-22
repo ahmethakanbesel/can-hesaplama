@@ -13,7 +13,8 @@ export function SegmentedToggle() {
             value: 'light',
             label: (
               <Center>
-                <Box>Açık</Box>
+                ☀️
+                <Box ml={10}>Açık</Box>
               </Center>
             ),
           },
@@ -21,7 +22,8 @@ export function SegmentedToggle() {
             value: 'dark',
             label: (
               <Center>
-                <Box>Koyu</Box>
+                🌙
+                <Box ml={10}>Koyu</Box>
               </Center>
             ),
           },
