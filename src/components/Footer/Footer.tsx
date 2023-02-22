@@ -36,10 +36,11 @@ export function Footer({ links }: FooterProps) {
   const items = links.map((link) => (
     <Anchor<'a'>
       color="dimmed"
+      target="_blank"
       key={link.label}
       href={link.link}
       sx={{ lineHeight: 1 }}
-      onClick={(event) => event.preventDefault()}
+      onClick={(event) => link.link}
       size="sm"
     >
       {link.label}
