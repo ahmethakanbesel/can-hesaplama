@@ -143,7 +143,7 @@ export default function App() {
         grade += statistics.average;
         grade = parseFloat(grade.toFixed(2));
         if (letterGrade == 'FF') {
-          grade = Math.max(form.values.passGrade, form.values.resThreshold);
+          grade = 0.00;
         }
         gradeBreakpoints.unshift({ breakpoint: grade, name: letterGrade });
       }
